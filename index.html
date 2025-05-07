@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <h1>To-Do List</h1>
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Add new task">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskText = taskInput.value.trim();
+
+            if (taskText !== "") {
+                tasks.push({ text: taskText, completed: false });
+                saveTasks();
+                displayTasks();
+                taskInput.value = '';
+            } else {
+                alert("Task cannot be empty!");
+            }
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement("li");
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = task.completed;
+                checkbox.onchange = () => {
+                    tasks[index].completed = !tasks[index].completed;
+                    saveTasks();
+                };
+
+                const span = document.createElement("span");
+                span.textContent = task.text;
+                if (task.completed) span.classList.add("completed");
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => {
+                    const newTask = prompt("Edit task:", task.text);
+                    if (newTask !== null && newTask.trim() !== "") {
+                        tasks[index].text = newTask.trim();
+                        saveTasks();
+                        displayTasks();
+                    }
+                };
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-button');
+                deleteButton.onclick = () => {
+                    tasks.splice(index, 1);
+                    saveTasks();
+                    displayTasks();
+                };
+
+                li.appendChild(checkbox);
+                li.appendChild(span);
+                li.appendChild(editButton);
+                li.appendChild(deleteButton);
+                taskList.appendChild(li);
+            });
+        }
+
+        window.onload = displayTasks;
+    </script>
+</body>
+</html>
