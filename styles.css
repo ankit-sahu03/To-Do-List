@@ -43,6 +43,7 @@ button {
     cursor: pointer;
 }
 
+/* Task list styles */
 #taskList {
     list-style-type: none;
     padding: 0;
@@ -64,6 +65,22 @@ button {
     color: gray;
 }
 
+/* Button spacing within task list */
+#taskList li button {
+    margin-left: 10px;
+}
+
+/* Edit button */
+.edit-button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Delete button */
 .delete-button {
     background-color: red;
     color: white;
@@ -73,6 +90,7 @@ button {
     cursor: pointer;
 }
 
+/* Responsive layout for small screens */
 @media screen and (max-width: 600px) {
     .input-section {
         flex-direction: column;
@@ -87,3 +105,4 @@ button {
         width: 100%;
     }
 }
+
